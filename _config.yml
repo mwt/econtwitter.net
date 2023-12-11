@@ -1,0 +1,35 @@
+title: EconTwitter Server Status
+author:
+  name: Matthew W. Thomas
+  email: mwt@econtwitter.net
+
+description: >-
+  Status updates for econtwitter Mastodon server.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://status.econtwitter.net" # the base hostname & protocol for your site
+
+feed:
+  path: https://github.com/mwt/econtwitter.net/issues/1
+
+remote_theme: jekyll/minima
+minima:
+  skin: auto
+  social_links:
+    - platform: mastodon
+      user_url: https://econtwitter.net/@mwt
+    - platform: github
+      user_url: https://github.com/mwt
+
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+  - LICENSE
