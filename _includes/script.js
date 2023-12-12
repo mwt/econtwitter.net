@@ -36,4 +36,5 @@ fetch(
     (html_list) =>
       (document.getElementById("issue-comments").innerHTML =
         html_list.join(" <hr> "))
-  );
+  )
+  .then(() => (document.getElementById("hidden-content").style = ""));
