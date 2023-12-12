@@ -1,30 +1,39 @@
 /* Get the issue and render it as HTML */
-fetch("https://api.github.com/repos/mwt/econtwitter.net/issues/1")
+fetch("https://api.github.com/repos/mwt/econtwitter.net/issues/1", {
+  headers: { Accept: "application/vnd.github.html+json" },
+})
   .then((resp) => resp.json())
-  .then((issue) => issue.body)
-  .then(marked.parse)
-  .then((html) => (document.getElementById("issue-content").innerHTML = html));
+  .then(
+    (issue) =>
+      (document.getElementById("issue-content").innerHTML = issue.body_html)
+  );
 
 /* Get the comments from the issue and render them as HTML */
-fetch("https://api.github.com/repos/mwt/econtwitter.net/issues/1/comments")
+fetch(
+  "https://api.github.com/repos/mwt/econtwitter.net/issues/1/comments?sort=created&direction=desc",
+  {
+    headers: { Accept: "application/vnd.github.html+json" },
+  }
+)
   .then((resp) => resp.json())
   .then((comments) =>
-    /* Ignore comments that aren't mine */
+    /* Ignore comments that aren't mine
+    (should be unnecessary since I closed it ) */
     comments.filter((comment) => comment.author_association === "OWNER")
   )
   .then((list) =>
-    /* Reverse the list so the newest comments are at the top */
-    list.reverse().map(
+    list.map(
       (comment) =>
-        `
-          <div class-"comment">
-            <strong><time datetime="${comment.updated_at}">
-              ${new Date(comment.updated_at).toLocaleString()}
-            </time></strong>
-            ${marked.parse(comment.body)}
-          </div>
-        `
+        `<div class-"comment">
+          <strong><time datetime="${comment.updated_at}">
+            ${new Date(comment.updated_at).toLocaleString()}
+          </time></strong>
+          ${comment.body_html}
+        </div>`
     )
   )
-  .then((html_list) => html_list.join("<hr>"))
-  .then((html) => (document.getElementById("issue-comments").innerHTML = html));
+  .then(
+    (html_list) =>
+      (document.getElementById("issue-comments").innerHTML =
+        html_list.join(" <hr> "))
+  );
